@@ -5,8 +5,12 @@
     @click="rail = false"
   >
     <v-list-item
-      :prepend-avatar="user?.photoURL ? user.photoURL : 'https://i.pravatar.cc/150?img=66'"
-      :title="user?.displayName ? user.displayName : 'No user is signed in'"
+      :prepend-avatar="
+        user?.photoURL ? user.photoURL : 'https://i.pravatar.cc/150?img=66'
+      "
+      :title="
+        user?.displayName ? user.displayName : 'Log in with your Google account'
+      "
       nav
     >
       <template v-slot:append>

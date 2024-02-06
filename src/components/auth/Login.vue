@@ -1,56 +1,15 @@
 <template>
-  <v-card class="mx-auto px-6 py-8" max-width="344">
-    <v-card-title>Log in</v-card-title>
-    <form>
-      <v-text-field
-        density="compact"
-        v-model="state.email"
-        :error-messages="v$.email.$errors.map((e) => e.$message)"
-        label="E-mail"
-        required
-        @input="v$.email.$touch"
-        @blur="v$.email.$touch"
-      ></v-text-field>
-
-      <v-text-field
-        density="compact"
-        v-model="state.password"
-        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-        :type="show1 ? 'text' : 'password'"
-        :error-messages="v$.password.$errors.map((e) => e.$message)"
-        label="Password"
-        required
-        @input="v$.password.$touch"
-        @blur="v$.password.$touch"
-        @click:append="show1 = !show1"
-        type="password"
-      ></v-text-field>
-
-      <div class="d-flex">
-        <v-btn
-          width="48%"
-          color="primary"
-          @click="login(state.email, state.password)"
-        >
-          submit
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn width="48%" @click="clear"> clear </v-btn>
-      </div>
-
-      <v-divider class="my-4"></v-divider>
-      <v-btn block class="me-4" color="success" @click="signInWithGoogle">
-        sign in with google
-      </v-btn>
-    </form>
-  </v-card>
+  <ReusableForm
+    formName="Log in"
+    :fields="fields"
+    @submit="login"
+    @useGoogle="signInWithGoogle"
+  />
 </template>
+
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { reactive } from "vue";
-import { useVuelidate } from "@vuelidate/core";
-import { email, required } from "@vuelidate/validators";
+import ReusableForm from "../forms/ReusableForm.vue";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -58,59 +17,43 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import Swal from "sweetalert2";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+const fields = ref([
+  {
+    label: "E-mail",
+    model: "email",
+    type: "email",
+  },
+  {
+    label: "Password",
+    model: "password",
+    type: "password",
+  },
+]);
+
 const auth = getAuth();
 
-async function login(email, password) {
+const login = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password).then(() => {
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "You have successfully signed up!",
-      });
-      router.push("/");
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function signInWithGoogle() {
-  try {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    await signInWithEmailAndPassword(auth, email, password);
+    Swal.fire("Success", "Logged in successfully", "success");
     router.push("/");
   } catch (error) {
-    console.error(error);
+    Swal.fire("Error", error.message, "error");
   }
-}
-
-const show1 = ref(false);
-
-const initialState = {
-  email: "",
-  password: "",
 };
 
-const state = reactive({
-  ...initialState,
-});
-
-const rules = {
-  email: { required, email },
-  password: { required },
-};
-
-const v$ = useVuelidate(rules, state);
-
-function clear() {
-  v$.value.$reset();
-
-  for (const [key, value] of Object.entries(initialState)) {
-    state[key] = value;
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    await signInWithPopup(auth, provider);
+    Swal.fire("Success", "Signed in with Google successfully", "success");
+    router.push("/");
+  } catch (error) {
+    Swal.fire("Error", error.message, "error");
   }
-}
+};
 </script>
