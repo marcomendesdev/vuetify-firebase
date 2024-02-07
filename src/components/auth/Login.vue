@@ -4,6 +4,7 @@
     :fields="fields"
     @submit="login"
     @useGoogle="signInWithGoogle"
+    btnText="sign in with Google"
   />
 </template>
 

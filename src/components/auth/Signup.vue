@@ -3,6 +3,7 @@
     formName="Sign up"
     @submit="register"
     @useGoogle="signInWithGoogle"
+    btnText="sign up with Google"
   />
 </template>
 
@@ -15,7 +16,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import Swal from "sweetalert2";
-import ReusableForm from "../forms/ReusableForm.vue"; // adjust the path as necessary
+import ReusableForm from "../forms/ReusableForm.vue"; 
 
 const router = useRouter();
 

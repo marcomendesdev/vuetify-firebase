@@ -21,12 +21,18 @@
       <div class="d-flex">
         <v-btn width="48%" color="primary" @click="submit"> submit </v-btn>
         <v-spacer></v-spacer>
-        <v-btn width="48%" @click="clear"> clear </v-btn>
+        <v-btn width="48%" @click="clear" color="grey-lighten-3"> clear </v-btn>
       </div>
 
       <v-divider class="my-4"></v-divider>
-      <v-btn block class="me-4" color="success" @click="useGoogle">
-        sign in with google
+      <v-btn
+        prepend-icon="custom:IconSVG"
+        block
+        class="me-4"
+        color="success"
+        @click="useGoogle"
+      >
+        {{ btnText }}
       </v-btn>
     </form>
   </v-card>
@@ -40,8 +46,12 @@ import { email, required } from "@vuelidate/validators";
 const props = defineProps({
   formName: {
     type: String,
-    default: 'Submit'
-  }
+    default: "Submit",
+  },
+  btnText: {
+    type: String,
+    default: "Submit",
+  },
 });
 
 const show1 = ref(false);
