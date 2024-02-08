@@ -100,7 +100,7 @@ router.beforeEach(async (to, from, next) => {
       title: "Oops...",
       text: "You need to login to see this page!",
     });
-     next('/login');
+    next('/login');
    }
  } else {
    next();

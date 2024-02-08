@@ -34,6 +34,20 @@
       >
         {{ btnText }}
       </v-btn>
+      <v-card-item>
+        <v-card-text v-if="formName === 'Sign up'">
+          Already have an account?
+          <router-link class="text-decoration-none" to="/login"
+            ><b>Log in</b></router-link
+          >
+        </v-card-text>
+        <v-card-text v-else>
+          Don't have an account?
+          <router-link class="text-decoration-none" to="/signup"
+            ><b>Sign up</b></router-link
+          >
+        </v-card-text>
+      </v-card-item>
     </form>
   </v-card>
 </template>

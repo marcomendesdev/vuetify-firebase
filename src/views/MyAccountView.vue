@@ -37,6 +37,10 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import UserCard from "../components/cards/UserCard.vue";
 import { ref } from 'vue';
+import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const auth = getAuth();
 let user = ref(null);
@@ -47,6 +51,13 @@ onAuthStateChanged(auth, (currentUser) => {
     console.log(user.value);
   } else {
     console.log('No user is signed in');
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "You need to login to see this page!",
+    }).then(() => {
+      router.push('/login')
+    });
   }
 });
 </script>
