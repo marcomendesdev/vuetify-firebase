@@ -23,8 +23,15 @@
         <v-spacer></v-spacer>
         <v-btn width="48%" @click="clear" color="grey-lighten-3"> clear </v-btn>
       </div>
+      
+      <v-card-item>
+        <div class="d-flex align-center">
+          <v-divider class="border-opacity-25" :thickness="1"></v-divider>
+          <v-card-subtitle class="ma-4">or</v-card-subtitle>
+          <v-divider class="border-opacity-25" :thickness="1"></v-divider>
+        </div>
+      </v-card-item>
 
-      <v-divider class="my-4"></v-divider>
       <v-btn
         prepend-icon="custom:IconSVG"
         block
@@ -53,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineEmits, computed, defineProps } from "vue";
+import { reactive, defineEmits, computed, defineProps } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
 
@@ -66,9 +73,11 @@ const props = defineProps({
     type: String,
     default: "Submit",
   },
+  fields: {
+    type: Array,
+    default: () => [],
+  },
 });
-
-const show1 = ref(false);
 
 const initialState = {
   email: "",
@@ -93,21 +102,6 @@ function clear() {
     state[key] = value;
   }
 }
-
-const fields = computed(() => [
-  {
-    label: "E-mail",
-    model: "email",
-    type: "email",
-  },
-  {
-    label: "Password",
-    model: "password",
-    type: show1.value ? "text" : "password",
-    appendIcon: show1.value ? "mdi-eye" : "mdi-eye-off",
-    clickAppend: () => (show1.value = !show1.value),
-  },
-]);
 
 const emit = defineEmits(["submit", "useGoogle"]);
 

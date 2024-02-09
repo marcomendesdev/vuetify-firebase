@@ -1,7 +1,7 @@
 <template>
   <ReusableForm
-    formName="Log in"
     :fields="fields"
+    formName="Log in"
     @submit="login"
     @useGoogle="signInWithGoogle"
     btnText="sign in with Google"
@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import ReusableForm from "../forms/ReusableForm.vue";
 import {
   getAuth,
@@ -22,7 +22,9 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const fields = ref([
+const show1 = ref(false);
+
+const fields = computed(() => [
   {
     label: "E-mail",
     model: "email",
@@ -31,7 +33,9 @@ const fields = ref([
   {
     label: "Password",
     model: "password",
-    type: "password",
+    type: show1.value ? "text" : "password",
+    appendIcon: show1.value ? "mdi-eye" : "mdi-eye-off",
+    clickAppend: () => (show1.value = !show1.value),
   },
 ]);
 
